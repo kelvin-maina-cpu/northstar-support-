@@ -1711,3 +1711,27 @@ main {
     padding-top: var(--space-md);
   }
 }
+
+/* -----------------------------------------------------------------
+   ADDED FOR REACT PORT
+   The original site used <a href="javascript:void(0)"> for the
+   "Contact" nav item, which isn't a real link. Ported as <button>
+   for correct semantics — these rules make it look identical.
+   ----------------------------------------------------------------- */
+.nav-link-btn,
+.mobile-nav-link-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.footer-link-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
