@@ -511,7 +511,7 @@ understood and agreed to follow this Team Charter.
 | [Member 1] | [Kelvin Maina] | Project Lead / Integration | | |
 | [Member 2] | [Mary Sharnice] | Frontend Developer | | |
 | [Member 3] | [Jacob Njihia] | Backend Developer | | |
-| [Member 4] | [Mercylyne Ongach ] | Data / Business Logic | | |
+| [Member 4] | [Mercylyne Ongach] | Data / Business Logic | | |
 | [Member 5] | [Bbossa mukisa] | QA / Documentation | | |
 
 ---
