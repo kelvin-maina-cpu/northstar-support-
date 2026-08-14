@@ -27,6 +27,12 @@ function createApp(options = {}) {
     res.status(404).json({ error: 'Not found' });
   });
 
+  // Error handler (must have 4 args for Express to treat it as such)
+  app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  });
+
   return app;
 }
 
