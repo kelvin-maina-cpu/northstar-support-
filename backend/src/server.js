@@ -1,13 +1,12 @@
 const http = require('http');
-const { MongoClient } = require('mongodb');
 const { createApp } = require('./app');
-const { getDatabaseName, getMongoUri, getPort } = require('./config');
+const { getPort } = require('./config');
+const mongo = require('./lib/mongo');
 
 async function start() {
-  const client = new MongoClient(getMongoUri());
-  await client.connect();
+  // Ensure Mongo is reachable before starting to accept traffic
+  await mongo.getDb();
 
-  const db = client.db(getDatabaseName());
   const app = createApp();
   const server = http.createServer(app);
 
@@ -19,7 +18,7 @@ async function start() {
 
   const shutdown = async () => {
     await new Promise((resolve) => server.close(resolve));
-    await client.close();
+    await mongo.close();
   };
 
   const handleSignal = async () => {
