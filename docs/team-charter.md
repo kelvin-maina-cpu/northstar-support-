@@ -26,7 +26,7 @@ development begins.
 
 ---
 
-# 2. Team Roles
+## 2. Team Roles
 
 | Member | Role | Primary Responsibility |
 |---|---|---|
