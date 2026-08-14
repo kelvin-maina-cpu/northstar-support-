@@ -508,11 +508,11 @@ understood and agreed to follow this Team Charter.
 
 | Member | GitHub Username | Role | Signature | Date |
 |---|---|---|---|---|
-| [Member 1] | [Kelvin Maina] | Project Lead / Integration | | |
-| [Member 2] | [Mary Sharnice] | Frontend Developer | | |
-| [Member 3] | [Jacob Njihia] | Backend Developer | | |
-| [Member 4] | [Mercylyne Ongach] | Data / Business Logic | | |
-| [Member 5] | [Bbossa mukisa] | QA / Documentation | | |
+| [Member 1] | [kelvin-maina-cpu] | Project Lead / Integration | | |
+| [Member 2] | [sharnie-coder] | Frontend Developer | | |
+| [Member 3] | [njihiajacx-cpu] | Backend Developer | | |
+| [Member 4] | [mercylyneongach-eng] | Data / Business Logic | | |
+| [Member 5] | [mukisajB] | QA / Documentation | | |
 
 ---
 
