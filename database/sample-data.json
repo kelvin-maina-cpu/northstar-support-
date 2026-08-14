@@ -1,0 +1,90 @@
+{
+  "orders": [
+    {
+      "orderId": "NS-1001",
+      "customerEmail": "alice@example.com",
+      "itemName": "Aria Jacket (M)",
+      "orderDate": "2026-08-10",
+      "status": "Shipped",
+      "shipmentStatus": "In Transit",
+      "carrier": "Kenya Post Express",
+      "trackingNumber": "KPE88213",
+      "expectedDelivery": "2026-08-15"
+    },
+    {
+      "orderId": "NS-1002",
+      "customerEmail": "bob@example.com",
+      "itemName": "Solstice Backpack",
+      "orderDate": "2026-08-13",
+      "status": "Processing",
+      "shipmentStatus": null,
+      "carrier": null,
+      "trackingNumber": null,
+      "expectedDelivery": null
+    },
+    {
+      "orderId": "NS-1003",
+      "customerEmail": "carol@example.com",
+      "itemName": "Trailhead Boots (42)",
+      "orderDate": "2026-08-01",
+      "status": "Delivered",
+      "shipmentStatus": "Delivered",
+      "carrier": "Sendy",
+      "trackingNumber": "SND40213",
+      "expectedDelivery": "2026-08-09"
+    },
+    {
+      "orderId": "NS-1004",
+      "customerEmail": "dave@example.com",
+      "itemName": "Vantage Sunglasses",
+      "orderDate": "2026-08-06",
+      "status": "Delayed",
+      "shipmentStatus": "Delayed In Transit",
+      "carrier": "G4S Courier",
+      "trackingNumber": "G4S91002",
+      "expectedDelivery": "2026-08-19"
+    },
+    {
+      "orderId": "NS-1005",
+      "customerEmail": "erin@example.com",
+      "itemName": "Aria Jacket (L)",
+      "orderDate": "2026-07-28",
+      "status": "Delivered",
+      "shipmentStatus": "Delivered",
+      "carrier": "Sendy",
+      "trackingNumber": "SND39810",
+      "expectedDelivery": "2026-08-03"
+    },
+    {
+      "orderId": "NS-1006",
+      "customerEmail": "frank@example.com",
+      "itemName": "Trailhead Boots (40)",
+      "orderDate": "2026-07-20",
+      "status": "Delivered",
+      "shipmentStatus": "Delivered",
+      "carrier": "Kenya Post Express",
+      "trackingNumber": "KPE87001",
+      "expectedDelivery": "2026-07-27"
+    }
+  ],
+  "returns": [
+    {
+      "returnId": "RT-2001",
+      "orderId": "NS-1005",
+      "reason": "wrong size",
+      "returnStatus": "In Transit",
+      "refundStatus": "Not Started",
+      "requestedDate": "2026-08-11",
+      "refundCompletedDate": null
+    },
+    {
+      "returnId": "RT-2002",
+      "orderId": "NS-1006",
+      "reason": "changed mind",
+      "returnStatus": "Received",
+      "refundStatus": "Refunded",
+      "requestedDate": "2026-07-29",
+      "refundCompletedDate": "2026-08-03"
+    }
+  ]
+}
