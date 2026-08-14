@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Check Order Status | Northstar Support</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================= -->
+  <!-- SITE HEADER / NAVIGATION                       -->
+  <!-- ============================================= -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <a href="index.html" class="brand" id="logoLink" aria-label="Northstar Support home">
+        <span class="brand-name">Northstar Support</span>
+      </a>
+
+      <nav class="primary-nav" id="primaryNav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html#hero" class="nav-link" id="navDashboard">Dashboard</a></li>
+          <li><a href="my-tickets.html" class="nav-link" id="navMyTickets">My Tickets</a></li>
+          <li><a href="index.html#knowledgeBase" class="nav-link" id="navKnowledgeBase">Knowledge Base</a></li>
+          <li><a href="javascript:void(0)" class="nav-link" id="navContact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+
+        <!-- Notifications -->
+        <div class="header-icon-wrap">
+          <button type="button" class="icon-btn" id="notificationsBtn" aria-haspopup="true" aria-expanded="false" aria-label="Notifications">
+            <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
+            <span class="icon-badge" id="notificationsBadge">3</span>
+          </button>
+
+          <div class="dropdown-panel" id="notificationsPanel" role="dialog" aria-label="Notifications" hidden>
+            <div class="dropdown-header">
+              <h3>Notifications</h3>
+              <button type="button" class="dropdown-close" id="notificationsClose" aria-label="Close notifications">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </div>
+            <ul class="notification-list" id="notificationList">
+              <li class="notification-item">
+                <span class="material-symbols-outlined notification-icon" aria-hidden="true">local_shipping</span>
+                <div class="notification-text">
+                  <p>Your order <strong>NS12345</strong> has been shipped.</p>
+                  <span class="notification-time">2 hours ago</span>
+                </div>
+              </li>
+              <li class="notification-item">
+                <span class="material-symbols-outlined notification-icon" aria-hidden="true">sync</span>
+                <div class="notification-text">
+                  <p>Your refund for order <strong>NS12089</strong> is being processed.</p>
+                  <span class="notification-time">Yesterday</span>
+                </div>
+              </li>
+              <li class="notification-item">
+                <span class="material-symbols-outlined notification-icon" aria-hidden="true">support_agent</span>
+                <div class="notification-text">
+                  <p>Your support request <strong>#001</strong> has been updated.</p>
+                  <span class="notification-time">2 days ago</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Help -->
+        <div class="header-icon-wrap">
+          <button type="button" class="icon-btn" id="helpBtn" aria-haspopup="true" aria-expanded="false" aria-label="Help">
+            <span class="material-symbols-outlined" aria-hidden="true">help</span>
+          </button>
+
+          <div class="dropdown-panel" id="helpPanel" role="dialog" aria-label="Help" hidden>
+            <div class="dropdown-header">
+              <h3>Help</h3>
+              <button type="button" class="dropdown-close" id="helpClose" aria-label="Close help menu">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </div>
+            <ul class="help-list">
+              <li>
+                <button type="button" class="help-option" id="helpOrder" data-target="order-status.html">
+                  <span class="material-symbols-outlined" aria-hidden="true">package_2</span>
+                  Order Help
+                </button>
+              </li>
+              <li>
+                <button type="button" class="help-option" id="helpReturns" data-target="returns-refunds.html">
+                  <span class="material-symbols-outlined" aria-hidden="true">assignment_return</span>
+                  Returns Help
+                </button>
+              </li>
+              <li>
+                <button type="button" class="help-option" id="helpRefund" data-target="returns-refunds.html">
+                  <span class="material-symbols-outlined" aria-hidden="true">payments</span>
+                  Refund Help
+                </button>
+              </li>
+              <li>
+                <button type="button" class="help-option" id="helpContact">
+                  <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+                  Contact Support
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Profile -->
+        <div class="header-icon-wrap">
+          <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false" aria-label="Profile menu">
+            <span class="profile-avatar" aria-hidden="true">JD</span>
+          </button>
+
+          <div class="dropdown-panel profile-menu" id="profileMenu" role="dialog" aria-label="Profile menu" hidden>
+            <div class="profile-menu-header">
+              <span class="profile-avatar large" aria-hidden="true">JD</span>
+              <div>
+                <p class="profile-menu-name">Jamie Doe</p>
+                <p class="profile-menu-email">jamie.doe@example.com</p>
+              </div>
+            </div>
+            <ul class="profile-menu-list">
+              <li>
+                <a href="profile.html" class="profile-menu-item" id="menuViewProfile">
+                  <span class="material-symbols-outlined" aria-hidden="true">person</span>
+                  View Profile
+                </a>
+              </li>
+              <li>
+                <a href="my-tickets.html" class="profile-menu-item" id="menuMyTickets">
+                  <span class="material-symbols-outlined" aria-hidden="true">confirmation_number</span>
+                  My Tickets
+                </a>
+              </li>
+              <li>
+                <button type="button" class="profile-menu-item" id="menuSettings">
+                  <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+                  Settings
+                </button>
+              </li>
+              <li class="profile-menu-item dark-mode-row">
+                <span class="dark-mode-label">
+                  <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+                  Dark Mode
+                </span>
+                <button type="button" class="theme-switch" id="darkModeToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+                  <span class="theme-switch-thumb"></span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="profile-menu-item danger" id="menuSignOut">
+                  <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+                  Sign Out
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button type="button" class="icon-btn mobile-only" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+          <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile" hidden>
+      <a href="index.html#hero" class="mobile-nav-link" id="mobileNavDashboard">Dashboard</a>
+      <a href="my-tickets.html" class="mobile-nav-link" id="mobileNavMyTickets">My Tickets</a>
+      <a href="index.html#knowledgeBase" class="mobile-nav-link" id="mobileNavKnowledgeBase">Knowledge Base</a>
+      <a href="javascript:void(0)" class="mobile-nav-link" id="mobileNavContact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- ============================================= -->
+  <!-- MAIN CONTENT                                   -->
+  <!-- ============================================= -->
+  <main>
+    <section class="page-section">
+      <div class="page-section-inner narrow">
+
+        <a href="index.html" class="back-link">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          Back to Home
+        </a>
+
+        <div class="page-heading">
+          <h1>Check Order Status</h1>
+          <p>Enter your order number to track your shipment.</p>
+        </div>
+
+        <!-- Order Lookup Form -->
+        <div class="card form-card">
+          <form id="orderStatusForm" novalidate>
+            <div class="form-field" id="orderNumberField">
+              <label for="orderNumber">Order Number</label>
+              <input type="text" id="orderNumber" name="orderNumber" placeholder="e.g. NS1024" autocomplete="off" />
+              <span class="form-error" id="orderNumberError"></span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="orderStatusSubmit">
+              <span class="material-symbols-outlined" aria-hidden="true">search</span>
+              <span id="orderStatusSubmitLabel">Check Status</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="orderLoadingState" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Looking up your order&hellip;</p>
+        </div>
+
+        <!-- Not Found / Error State -->
+        <div class="error-banner" id="orderNotFoundState" hidden>
+          <span class="material-symbols-outlined" aria-hidden="true">error</span>
+          <div>
+            <p class="error-banner-title">Order Not Found</p>
+            <p class="error-banner-desc">We couldn't find that order. Please check your order number and try again.</p>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card result-card" id="orderResultCard" hidden>
+          <div class="result-card-header">
+            <h2 id="orderResultId">Order: NS1024</h2>
+            <span class="status-pill" id="orderResultStatusPill">Shipped</span>
+          </div>
+          <div class="result-card-body">
+            <div class="result-grid">
+              <div>
+                <span class="result-label">Status</span>
+                <span class="result-value" id="orderResultStatus">Shipped</span>
+              </div>
+              <div>
+                <span class="result-label">Expected Delivery</span>
+                <span class="result-value" id="orderResultDelivery">15 Aug 2026</span>
+              </div>
+            </div>
+
+            <!-- Tracking Timeline -->
+            <ul class="timeline" id="orderTimeline"></ul>
+          </div>
+        </div>
+
+        <!-- Sample order numbers hint -->
+        <p class="hint-text">
+          Try a sample order number: <strong>NS12345</strong> (shipped), <strong>NS10000</strong> (delivered), or <strong>NS20000</strong> (processing).
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================= -->
+  <!-- CONTACT SUPPORT MODAL                          -->
+  <!-- ============================================= -->
+  <div class="modal-overlay" id="contactModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <div class="modal-header">
+        <h2 id="contactModalTitle">Contact Support</h2>
+        <button type="button" class="modal-close" id="contactModalClose" aria-label="Close contact form">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <form id="contactForm" class="modal-body" novalidate>
+        <div class="form-field">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" name="name" required />
+          <span class="form-error" id="contactNameError"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" name="email" required />
+          <span class="form-error" id="contactEmailError"></span>
+        </div>
+
+        <div class="form-field">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="4" required></textarea>
+          <span class="form-error" id="contactMessageError"></span>
+        </div>
+
+        <div class="form-success" id="contactSuccess" hidden>
+          <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+          <p>Thanks for reaching out! Our support team will get back to you shortly.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="contactCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="contactSubmit">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- SETTINGS MODAL                                 -->
+  <!-- ============================================= -->
+  <div class="modal-overlay" id="settingsModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+      <div class="modal-header">
+        <h2 id="settingsModalTitle">Settings</h2>
+        <button type="button" class="modal-close" id="settingsModalClose" aria-label="Close settings">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="settings-row">
+          <span class="dark-mode-label">
+            <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+            Dark Mode
+          </span>
+          <button type="button" class="theme-switch" id="settingsDarkModeToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+            <span class="theme-switch-thumb"></span>
+          </button>
+        </div>
+        <p class="settings-note">Additional account settings will be available once the backend is connected.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- SIGN OUT CONFIRMATION DIALOG                   -->
+  <!-- ============================================= -->
+  <div class="modal-overlay" id="signOutModal" hidden>
+    <div class="modal modal-small" role="alertdialog" aria-modal="true" aria-labelledby="signOutModalTitle">
+      <div class="modal-header">
+        <h2 id="signOutModalTitle">Sign Out</h2>
+      </div>
+      <div class="modal-body">
+        <p>This is an MVP demo without live authentication. Signing out will simply reset your demo session.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="signOutCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="signOutConfirm">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- FOOTER                                         -->
+  <!-- ============================================= -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-name">Northstar Support</span>
+        <span class="footer-copy">© 2026 Northstar Support. All rights reserved.</span>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="javascript:void(0)" class="footer-link" id="footerPrivacy">Privacy Policy</a>
+        <a href="javascript:void(0)" class="footer-link" id="footerTerms">Terms of Service</a>
+        <a href="javascript:void(0)" class="footer-link" id="footerAccessibility">Accessibility</a>
+        <a href="javascript:void(0)" class="footer-link" id="footerStatus">Status Page</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
