@@ -22,10 +22,16 @@ async function start() {
     await client.close();
   };
 
-  process.on('SIGINT', async () => {
-    await shutdown();
-    process.exit(0);
-  });
+  const handleSignal = async () => {
+    try {
+      await shutdown();
+    } finally {
+      process.exit(0);
+    }
+  };
+
+  process.once('SIGINT', handleSignal);
+  process.once('SIGTERM', handleSignal);
 }
 
 start().catch((err) => {
