@@ -2,11 +2,12 @@ const supportLogic = require('../services/supportLogicInterface');
 
 async function getOrder(req, res, next) {
   try {
-    const { orderId } = req.params;
+    const { orderId: rawOrderId } = req.params;
+    const orderId = (rawOrderId || '').trim().toUpperCase();
 
     // Basic validation: expect a non-empty orderId (pattern like NS-1001)
-    if (!orderId || !/^NS-\d+/i.test(orderId)) {
-      return res.status(400).json({ error: 'Invalid orderId', orderId });
+    if (!orderId || !/^NS-\d+$/.test(orderId)) {
+      return res.status(400).json({ error: 'Invalid orderId', orderId: rawOrderId });
     }
 
     const result = await supportLogic.getOrderStatus(orderId);
