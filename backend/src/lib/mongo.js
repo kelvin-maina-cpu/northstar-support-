@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const { getDatabaseName, getMongoUri } = require('../config');
 
 let _client = null;
 let _db = null;
@@ -6,10 +7,10 @@ let _db = null;
 async function getDb() {
   if (_db) return _db;
 
-  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+  const uri = getMongoUri();
   _client = new MongoClient(uri);
   await _client.connect();
-  _db = _client.db('northstar');
+  _db = _client.db(getDatabaseName());
   return _db;
 }
 
