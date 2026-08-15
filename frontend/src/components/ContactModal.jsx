@@ -2,6 +2,7 @@ import { useState } from "react";
 import Modal from "./Modal";
 import { useModal } from "../context/ModalContext";
 import { useToast } from "../context/ToastContext";
+import { createTicket } from "../services/tickets";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -13,11 +14,13 @@ export default function ContactModal() {
   const [values, setValues] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [createdTicket, setCreatedTicket] = useState(null);
 
   function reset() {
     setValues({ name: "", email: "", message: "" });
     setErrors({});
     setSubmitted(false);
+    setCreatedTicket(null);
   }
 
   function handleClose() {
@@ -39,9 +42,10 @@ export default function ContactModal() {
     event.preventDefault();
     if (!validate()) return;
 
-    // Future: Replace with a real API call to submit the support request.
+    const ticket = createTicket(values.message);
+    setCreatedTicket(ticket);
     setSubmitted(true);
-    showToast("Your message has been sent to support.");
+    showToast(`Ticket #${ticket.id} has been created.`);
 
     setTimeout(() => {
       closeModal();
@@ -108,7 +112,7 @@ export default function ContactModal() {
         <div className="modal-body">
           <div className="form-success">
             <span className="material-symbols-outlined" aria-hidden="true">check_circle</span>
-            <p>Thanks for reaching out! Our support team will get back to you shortly.</p>
+            <p>Your ticket #{createdTicket?.id} has been created. Our support team will get back to you shortly.</p>
           </div>
         </div>
       )}

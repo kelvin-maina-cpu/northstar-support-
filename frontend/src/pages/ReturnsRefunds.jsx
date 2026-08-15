@@ -7,6 +7,10 @@ export default function ReturnsRefunds() {
   // Item 1 ("How do I return an item?") is expanded by default, matching
   // the original's aria-expanded="true" on accordionTrigger1.
   const [openItem, setOpenItem] = useState(1);
+  const [lookupOrder, setLookupOrder] = useState("");
+  const [lookupPhase, setLookupPhase] = useState("idle");
+  const [lookupResult, setLookupResult] = useState(null);
+  const [lookupError, setLookupError] = useState("");
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [values, setValues] = useState({ orderNumber: "", reason: "" });
   const [errors, setErrors] = useState({});
@@ -26,6 +30,13 @@ export default function ReturnsRefunds() {
   function closeReturnModal() {
     setReturnModalOpen(false);
     resetReturnForm();
+  }
+
+  function selectDemoOrder(orderId) {
+    setLookupOrder(orderId);
+    setLookupError("");
+    setLookupResult(null);
+    setLookupPhase("idle");
   }
 
   function handleSubmit(event) {
@@ -59,6 +70,97 @@ export default function ReturnsRefunds() {
         </div>
 
         <div className="accordion">
+          <div className="card form-card">
+            <form
+              className="lookup-form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const raw = lookupOrder.trim();
+                setLookupError("");
+                setLookupResult(null);
+
+                if (!raw) {
+                  setLookupError('Please enter an order number.');
+                  return;
+                }
+
+                setLookupPhase('loading');
+                const id = raw.toUpperCase();
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 8000);
+
+                try {
+                  const res = await fetch(`/api/returns/${encodeURIComponent(id)}`, { signal: controller.signal });
+                  if (res.status === 404) {
+                    setLookupPhase('not-found');
+                    return;
+                  }
+                  if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                  }
+                  const data = await res.json();
+                  setLookupResult(data);
+                  setLookupPhase('found');
+                } catch (err) {
+                  if (err.name === 'AbortError') setLookupError('Request timed out.');
+                  else setLookupError(err.message || 'Network error');
+                  setLookupPhase('error');
+                } finally {
+                  clearTimeout(timeout);
+                }
+              }}
+            >
+              <div className={`form-field${lookupError ? ' invalid' : ''}`}>
+                <label htmlFor="lookupOrder">Check return eligibility</label>
+                <input id="lookupOrder" placeholder="e.g. NS1024" value={lookupOrder} onChange={(e) => setLookupOrder(e.target.value)} />
+                <span className="form-error">{lookupError}</span>
+                <div className="demo-orders" aria-label="Demo order IDs available for testing">
+                  <span className="demo-orders-label">Demo order IDs:</span>
+                  <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1003")}>NS-1003 <span>eligible</span></button>
+                  <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1001")}>NS-1001 <span>still shipping</span></button>
+                  <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1005")}>NS-1005 <span>return in transit</span></button>
+                  <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1006")}>NS-1006 <span>refund complete</span></button>
+                </div>
+              </div>
+
+              <div className="modal-actions">
+                <button className="btn btn-primary" type="submit">Check</button>
+              </div>
+            </form>
+
+            {lookupPhase === 'loading' && (
+              <div className="loading-state"><span className="spinner" aria-hidden="true"></span><p>Checking return eligibility&hellip;</p></div>
+            )}
+
+            {lookupPhase === 'not-found' && (
+              <div className="error-banner"><p>Order not found.</p></div>
+            )}
+
+            {lookupPhase === 'error' && (
+              <div className="error-banner"><p>{lookupError}</p></div>
+            )}
+
+            {lookupPhase === 'found' && lookupResult && (
+              <div className="card result-card">
+                <div className="result-card-header">
+                  <h2>Order: {lookupResult.orderId}</h2>
+                  <span className={`status-pill ${lookupResult.eligible ? 'status-open' : 'status-delayed'}`}>{lookupResult.eligible ? 'Eligible' : 'Not eligible'}</span>
+                </div>
+                <div className="result-card-body">
+                  <div className="result-grid">
+                    <div>
+                      <span className="result-label">Return Status</span>
+                      <span className="result-value">{lookupResult.returnStatus}</span>
+                    </div>
+                    <div>
+                      <span className="result-label">Refund Status</span>
+                      <span className="result-value">{lookupResult.refundStatus || 'N/A'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
           <div className="accordion-item">
             <button
               type="button"
