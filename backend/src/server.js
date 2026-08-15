@@ -1,9 +1,11 @@
+require('dotenv').config();
 const http = require('http');
 const { createApp } = require('./app');
-const { getPort } = require('./config');
+const { getPort, assertProductionConfig } = require('./config');
 const mongo = require('./lib/mongo');
 
 async function start() {
+  assertProductionConfig();
   // Ensure Mongo is reachable before starting to accept traffic
   await mongo.getDb();
 
@@ -12,7 +14,7 @@ async function start() {
 
   const port = getPort();
 
-  server.listen(port, () => {
+  server.listen(port, '0.0.0.0', () => {
     console.log(`Northstar backend listening on port ${port}`);
   });
 

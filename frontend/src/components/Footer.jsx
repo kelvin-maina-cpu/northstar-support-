@@ -1,14 +1,8 @@
-import { useToast } from "../context/ToastContext";
-
-const FOOTER_MESSAGES = {
-  privacy: "Privacy Policy page is coming soon.",
-  terms: "Terms of Service page is coming soon.",
-  accessibility: "Accessibility statement is coming soon.",
-  status: "Status page is coming soon.",
-};
+import { Link } from "react-router-dom";
+import { useModal } from "../context/ModalContext";
 
 export default function Footer() {
-  const { showToast } = useToast();
+  const { openModal } = useModal();
 
   return (
     <footer className="site-footer">
@@ -17,20 +11,11 @@ export default function Footer() {
           <span className="brand-name">Northstar Support</span>
           <span className="footer-copy">© 2026 Northstar Support. All rights reserved.</span>
         </div>
-        <nav className="footer-links" aria-label="Footer">
-          {Object.entries(FOOTER_MESSAGES).map(([key, message]) => (
-            <button
-              key={key}
-              type="button"
-              className="footer-link footer-link-btn"
-              onClick={() => showToast(message)}
-            >
-              {key === "privacy" && "Privacy Policy"}
-              {key === "terms" && "Terms of Service"}
-              {key === "accessibility" && "Accessibility"}
-              {key === "status" && "Status Page"}
-            </button>
-          ))}
+        <nav className="footer-links" aria-label="Support shortcuts">
+          <Link to="/order-status" className="footer-link">Track an Order</Link>
+          <Link to="/returns-refunds" className="footer-link">Returns &amp; Refunds</Link>
+          <Link to="/my-tickets" className="footer-link">My Tickets</Link>
+          <button type="button" className="footer-link footer-link-btn" onClick={() => openModal("contact")}>Contact Support</button>
         </nav>
       </div>
     </footer>

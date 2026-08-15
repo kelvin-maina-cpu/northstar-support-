@@ -68,9 +68,11 @@ export default function Home() {
     if (!trimmed) return;
 
     const normalized = trimmed.toLowerCase();
-    const matches = KB_ARTICLES.filter((article) =>
-      article.keywords.some((k) => k.includes(normalized) || normalized.includes(k))
-    );
+    const searchTerms = normalized.split(/\s+/).filter(Boolean);
+    const matches = KB_ARTICLES.filter((article) => {
+      const searchable = [article.title, article.description, ...article.keywords].join(" ").toLowerCase();
+      return searchTerms.every((term) => searchable.includes(term));
+    });
     setResults({ query: trimmed, matches });
   }
 

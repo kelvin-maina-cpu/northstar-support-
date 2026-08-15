@@ -1,50 +1,38 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-// Future: Replace sample order data with an API call to the order lookup service.
-const SAMPLE_ORDERS = {
-  NS12345: {
-    status: "Shipped",
-    statusClass: "status-shipped",
-    delivery: "15 Aug 2026",
-    timeline: [
-      { title: "Order Placed", desc: "10 Aug 2026", state: "complete", icon: "check" },
-      { title: "Shipped", desc: "12 Aug 2026 - Package has left the facility.", state: "current", icon: "local_shipping" },
-      { title: "Out for Delivery", desc: "", state: "upcoming", icon: "" },
-    ],
-  },
-  NS10000: {
-    status: "Delivered",
-    statusClass: "status-delivered",
-    delivery: "5 Aug 2026",
-    timeline: [
-      { title: "Order Placed", desc: "1 Aug 2026", state: "complete", icon: "check" },
-      { title: "Shipped", desc: "2 Aug 2026 - Package has left the facility.", state: "complete", icon: "local_shipping" },
-      { title: "Delivered", desc: "5 Aug 2026 - Left at front door.", state: "complete", icon: "task_alt" },
-    ],
-  },
-  NS20000: {
-    status: "Processing",
-    statusClass: "status-open",
-    delivery: "Pending",
-    timeline: [
-      { title: "Order Placed", desc: "13 Aug 2026", state: "complete", icon: "check" },
-      { title: "Processing", desc: "Preparing your items for shipment.", state: "current", icon: "inventory_2" },
-      { title: "Shipped", desc: "", state: "upcoming", icon: "" },
-    ],
-  },
-};
+const ORDER_NUMBER_PATTERN = /^NS-?\d{4,6}$/i;
 
-const ORDER_NUMBER_PATTERN = /^NS\d{4,6}$/i;
+function statusToClass(status) {
+  switch ((status || '').toLowerCase()) {
+    case 'shipped':
+      return 'status-shipped';
+    case 'delivered':
+      return 'status-delivered';
+    case 'processing':
+      return 'status-open';
+    case 'delayed':
+      return 'status-delayed';
+    default:
+      return 'status-open';
+  }
+}
 
 export default function OrderStatus() {
   const [orderNumber, setOrderNumber] = useState("");
   const [error, setError] = useState("");
-  // phase: "idle" | "loading" | "found" | "not-found"
+  // phase: "idle" | "loading" | "found" | "not-found" | "error"
   const [phase, setPhase] = useState("idle");
   const [result, setResult] = useState(null);
 
-  function handleSubmit(event) {
+  function selectDemoOrder(orderId) {
+    setOrderNumber(orderId);
+    setError("");
+    setResult(null);
+    setPhase("idle");
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
     const raw = orderNumber.trim();
 
@@ -57,23 +45,50 @@ export default function OrderStatus() {
     }
 
     if (!ORDER_NUMBER_PATTERN.test(raw)) {
-      setError("Order numbers look like NS12345.");
+      setError("Order numbers look like NS-1001.");
       return;
     }
 
-    const normalized = raw.toUpperCase();
+    const normalized = raw.toUpperCase().replace(/^NS-?/, "NS-");
     setPhase("loading");
 
-    // Future: Replace this timeout with a real API request to the order service.
-    setTimeout(() => {
-      const order = SAMPLE_ORDERS[normalized];
-      if (!order) {
-        setPhase("not-found");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    try {
+      const res = await fetch(`/api/orders/${encodeURIComponent(normalized)}`, { signal: controller.signal });
+
+      if (res.status === 404) {
+        setPhase('not-found');
         return;
       }
-      setResult({ id: normalized, ...order });
-      setPhase("found");
-    }, 700);
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      setResult({
+        id: data.orderId || normalized,
+        status: data.status || 'Unknown',
+        statusClass: statusToClass(data.status),
+        delivery: data.expectedDelivery || 'Pending',
+        timeline: [],
+      });
+
+      setPhase('found');
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        setError('Request timed out. Please try again.');
+      } else {
+        setError(err.message || 'Network error');
+      }
+      setPhase('error');
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   return (
@@ -97,12 +112,19 @@ export default function OrderStatus() {
                 type="text"
                 id="orderNumber"
                 name="orderNumber"
-                placeholder="e.g. NS1024"
+                placeholder="e.g. NS-1001"
                 autoComplete="off"
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
               />
               <span className="form-error">{error}</span>
+              <div className="demo-orders" aria-label="Demo order IDs available for testing">
+                <span className="demo-orders-label">Demo order IDs:</span>
+                <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1001")}>NS-1001 <span>shipped</span></button>
+                <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1002")}>NS-1002 <span>processing</span></button>
+                <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1003")}>NS-1003 <span>delivered</span></button>
+                <button type="button" className="demo-order" onClick={() => selectDemoOrder("NS-1004")}>NS-1004 <span>delayed</span></button>
+              </div>
             </div>
             <button type="submit" className="btn btn-primary btn-block">
               <span className="material-symbols-outlined" aria-hidden="true">search</span>
@@ -124,6 +146,16 @@ export default function OrderStatus() {
             <div>
               <p className="error-banner-title">Order Not Found</p>
               <p className="error-banner-desc">We couldn't find that order. Please check your order number and try again.</p>
+            </div>
+          </div>
+        )}
+
+        {phase === "error" && (
+          <div className="error-banner">
+            <span className="material-symbols-outlined" aria-hidden="true">error</span>
+            <div>
+              <p className="error-banner-title">Lookup Failed</p>
+              <p className="error-banner-desc">{error || 'Something went wrong while contacting the server.'}</p>
             </div>
           </div>
         )}
@@ -164,10 +196,6 @@ export default function OrderStatus() {
             </div>
           </div>
         )}
-
-        <p className="hint-text">
-          Try a sample order number: <strong>NS12345</strong> (shipped), <strong>NS10000</strong> (delivered), or <strong>NS20000</strong> (processing).
-        </p>
       </div>
     </section>
   );

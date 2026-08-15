@@ -5,10 +5,15 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "seed": "node ../database/seed.js"
+    "seed": "node run-seed.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mongodb": "^5.7.0"
+    "mongodb": "^5.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4"
+  },
+  "engines": {
+    "node": ">=20 <23"
   }
 }

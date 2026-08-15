@@ -15,4 +15,10 @@ function getPort() {
   return parseInt(process.env.PORT || '3000', 10);
 }
 
-module.exports = { getMongoUri, getDatabaseName, getPort };
+function assertProductionConfig() {
+  if (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI must be configured in production.');
+  }
+}
+
+module.exports = { getMongoUri, getDatabaseName, getPort, assertProductionConfig };

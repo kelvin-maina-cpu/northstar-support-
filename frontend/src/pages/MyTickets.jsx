@@ -1,17 +1,17 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useModal } from "../context/ModalContext";
-
-// Future: Replace sample ticket data with an API call to the support ticketing system.
-const TICKETS = [
-  { id: "001", issue: "Order Status", order: "NS12345", created: "10 Aug 2026", status: "Resolved", statusClass: "status-resolved" },
-  { id: "002", issue: "Refund Request", order: "NS12089", created: "11 Aug 2026", status: "In Progress", statusClass: "status-in-progress" },
-  { id: "003", issue: "Return Not Received by Carrier", order: "NS11876", created: "12 Aug 2026", status: "Open", statusClass: "status-open" },
-  { id: "004", issue: "Wrong Item Delivered", order: "NS10992", created: "3 Aug 2026", status: "Closed", statusClass: "status-closed" },
-  { id: "005", issue: "Order Status", order: "NS10521", created: "29 Jul 2026", status: "Resolved", statusClass: "status-resolved" },
-];
+import { getTickets } from "../services/tickets";
 
 export default function MyTickets() {
   const { openModal } = useModal();
+  const [tickets, setTickets] = useState(getTickets);
+
+  useEffect(() => {
+    const refreshTickets = () => setTickets(getTickets());
+    window.addEventListener("northstar-tickets-updated", refreshTickets);
+    return () => window.removeEventListener("northstar-tickets-updated", refreshTickets);
+  }, []);
 
   return (
     <section className="page-section">
@@ -33,7 +33,7 @@ export default function MyTickets() {
         </div>
 
         <div className="ticket-list">
-          {TICKETS.map((ticket) => (
+          {tickets.map((ticket) => (
             <article className="ticket-card" key={ticket.id}>
               <div className="ticket-card-main">
                 <p className="ticket-id">Ticket #{ticket.id}</p>
@@ -45,9 +45,7 @@ export default function MyTickets() {
           ))}
         </div>
 
-        <p className="hint-text">
-          This is sample demo data. Live ticket syncing will be available once the backend is connected.
-        </p>
+        <p className="hint-text">New support requests are saved to this browser and appear here immediately.</p>
       </div>
     </section>
   );
