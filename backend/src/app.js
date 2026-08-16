@@ -20,21 +20,15 @@ function createApp(options = {}) {
   app.set('trust proxy', 1);
   app.use(express.json({ limit: '100kb' }));
 
-  // Set FRONTEND_URL to a comma-separated list when deploying previews or a
-// Keep the production site available when Render has not yet been configured
-// with FRONTEND_URL. Deployments can override or extend this list with a
-// comma-separated FRONTEND_URL value.
-const allowedOrigins = (process.env.FRONTEND_URL ||
-  'http://localhost:5173,https://northstar-support-phi.vercel.app')
-    .split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-  // The production frontend remains allowed even when Render has an outdated
-  // FRONTEND_URL setting. FRONTEND_URL can add custom domains or previews.
+  // FRONTEND_URL can add custom domains or previews. These two origins are
+  // always allowed for local development and the production Vercel frontend.
   const allowedOrigins = [...new Set([
+    ...(process.env.FRONTEND_URL || '')
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean),
     'http://localhost:5173',
     'https://northstar-support-phi.vercel.app',
-    ...configuredOrigins,
   ])];
   app.use(cors({
     origin(origin, callback) {
