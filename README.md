@@ -101,7 +101,10 @@ Before deployment, confirm:
 
 - `MONGODB_URI` points to the target environment
 - `PORT` and backend URL are set correctly
-- CORS is configured for the frontend origin
+- In Render, set `FRONTEND_URL` to `https://northstar-support-nine.vercel.app`
+  (add `http://localhost:5173` after a comma if you also need local browser
+  access), then redeploy the backend. Origins must be exact and must not end
+  in a trailing slash.
 - build and startup commands pass in the target environment
 - no credentials or secrets are committed to the repository
 

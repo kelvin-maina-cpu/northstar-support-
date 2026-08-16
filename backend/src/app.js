@@ -21,8 +21,11 @@ function createApp(options = {}) {
   app.use(express.json({ limit: '100kb' }));
 
   // Set FRONTEND_URL to a comma-separated list when deploying previews or a
-  // custom domain in addition to the primary Vercel deployment.
-  const configuredOrigins = (process.env.FRONTEND_URL || '')
+// Keep the production site available when Render has not yet been configured
+// with FRONTEND_URL. Deployments can override or extend this list with a
+// comma-separated FRONTEND_URL value.
+const allowedOrigins = (process.env.FRONTEND_URL ||
+  'http://localhost:5173,https://northstar-support-phi.vercel.app')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
