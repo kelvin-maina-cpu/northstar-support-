@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const ORDER_NUMBER_PATTERN = /^NS-?\d{4,6}$/i;
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 function statusToClass(status) {
   switch ((status || '').toLowerCase()) {
@@ -56,7 +57,7 @@ export default function OrderStatus() {
     const timeout = setTimeout(() => controller.abort(), 8000);
 
     try {
-      const res = await fetch(`/api/orders/${encodeURIComponent(normalized)}`, { signal: controller.signal });
+      const res = await fetch(`${API_BASE_URL}/api/orders/${encodeURIComponent(normalized)}`, { signal: controller.signal });
 
       if (res.status === 404) {
         setPhase('not-found');

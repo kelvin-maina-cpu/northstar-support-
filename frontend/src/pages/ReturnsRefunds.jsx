@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useToast } from "../context/ToastContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
 export default function ReturnsRefunds() {
   // Item 1 ("How do I return an item?") is expanded by default, matching
   // the original's aria-expanded="true" on accordionTrigger1.
@@ -90,7 +92,7 @@ export default function ReturnsRefunds() {
                 const timeout = setTimeout(() => controller.abort(), 8000);
 
                 try {
-                  const res = await fetch(`/api/returns/${encodeURIComponent(id)}`, { signal: controller.signal });
+                  const res = await fetch(`${API_BASE_URL}/api/returns/${encodeURIComponent(id)}`, { signal: controller.signal });
                   if (res.status === 404) {
                     setLookupPhase('not-found');
                     return;
