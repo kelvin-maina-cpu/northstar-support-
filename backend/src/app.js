@@ -22,11 +22,17 @@ function createApp(options = {}) {
 
   // Set FRONTEND_URL to a comma-separated list when deploying previews or a
   // custom domain in addition to the primary Vercel deployment.
-  const allowedOrigins = (process.env.FRONTEND_URL ||
-    'http://localhost:5173,https://northstar-support-phi.vercel.app')
+  const configuredOrigins = (process.env.FRONTEND_URL || '')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
+  // The production frontend remains allowed even when Render has an outdated
+  // FRONTEND_URL setting. FRONTEND_URL can add custom domains or previews.
+  const allowedOrigins = [...new Set([
+    'http://localhost:5173',
+    'https://northstar-support-phi.vercel.app',
+    ...configuredOrigins,
+  ])];
   app.use(cors({
     origin(origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
