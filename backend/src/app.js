@@ -22,7 +22,8 @@ function createApp(options = {}) {
 
   // Set FRONTEND_URL to a comma-separated list when deploying previews or a
   // custom domain in addition to the primary Vercel deployment.
-  const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
+  const allowedOrigins = (process.env.FRONTEND_URL ||
+    'http://localhost:5173,https://northstar-support-phi.vercel.app')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
